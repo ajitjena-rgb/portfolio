@@ -6,7 +6,7 @@
   <title>Eltropy Intelligence — Case Study · Ajit Jena</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;0,700;1,300;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;0,700;1,300;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -16,7 +16,7 @@
       --orange: #f97316; --green: #22c55e; --radius: 16px;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
 
     /* NAV */
     nav {
@@ -209,6 +209,78 @@
     footer a { color: rgba(255,255,255,.7); text-decoration: none; }
     footer a:hover { color: white; }
 
+    /* PRODUCT SHOWCASE SLIDER */
+    .sc-tabs { display: flex; gap: 8px; margin-bottom: 32px; }
+    .sc-tab {
+      padding: 10px 22px; border-radius: 100px; font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--line);
+      background: var(--white); color: var(--ink3); transition: all .2s;
+    }
+    .sc-tab.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .sc-tab:hover:not(.active) { border-color: var(--ink3); color: var(--ink); }
+
+    .sc-carousel-wrap { position: relative; overflow: hidden; }
+    .sc-carousel { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 24px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .sc-carousel::-webkit-scrollbar { display: none; }
+    .sc-carousel.hidden { display: none; }
+
+    .sc-slide { flex-shrink: 0; width: 420px; scroll-snap-align: start; }
+    .sc-browser {
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,.12);
+      border: 1px solid var(--line);
+      background: white;
+    }
+    .sc-browser-bar {
+      background: #f0f0f5; padding: 10px 14px; display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid #e2e2ea;
+    }
+    .sc-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .sc-url { flex: 1; background: white; border-radius: 6px; padding: 4px 10px; font-size: 10px; color: #888; font-family: 'Poppins', sans-serif; margin: 0 8px; }
+    .sc-screen { width: 100%; height: 260px; overflow: hidden; position: relative; }
+    .sc-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .sc-screen-mock { width: 100%; height: 260px; display: flex; }
+
+    /* Eltropy app sidebar */
+    .sc-sidebar { width: 44px; background: #1D1A40; height: 100%; flex-shrink: 0; padding: 12px 8px; display: flex; flex-direction: column; gap: 6px; }
+    .sc-sb-dot { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,.08); }
+    .sc-sb-dot.active { background: rgba(167,139,250,.25); }
+    .sc-sb-logo { width: 28px; height: 28px; border-radius: 8px; background: #5b4fcf; margin-bottom: 8px; }
+    .sc-content { flex: 1; background: #fafafa; overflow: hidden; display: flex; flex-direction: column; }
+    .sc-topbar { height: 36px; background: white; border-bottom: 1px solid #eee; display: flex; align-items: center; padding: 0 14px; gap: 10px; }
+    .sc-topbar-title { font-size: 10px; font-weight: 700; color: #1D1A40; }
+    .sc-topbar-chip { background: #ede9fe; border-radius: 4px; padding: 2px 6px; font-size: 8px; font-weight: 700; color: #6d28d9; }
+    .sc-body { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+
+    .sc-caption { padding: 14px 4px 0; }
+    .sc-caption-label { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; font-family: 'Syne', sans-serif; }
+    .sc-caption-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .sc-caption-desc { font-size: 12px; color: var(--ink3); line-height: 1.6; }
+
+    .sc-nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%; background: white; border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10;
+      box-shadow: 0 2px 12px rgba(0,0,0,.1); font-size: 16px; color: var(--ink); transition: all .2s;
+    }
+    .sc-nav-btn:hover { background: var(--ink); color: white; }
+    .sc-prev { left: -16px; }
+    .sc-next { right: -16px; }
+
+    /* existing screen slides */
+    .sc-existing img { width: 100%; height: 260px; object-fit: cover; object-position: top; display: block; }
+
+    /* kpi mini row */
+    .sc-kpi-row { display: flex; gap: 5px; }
+    .sc-kpi { flex: 1; background: white; border: 1px solid #eee; border-radius: 6px; padding: 6px 8px; }
+    .sc-kpi-num { font-size: 11px; font-weight: 800; color: #1D1A40; letter-spacing: -.02em; }
+    .sc-kpi-label { font-size: 7px; color: #888; margin-top: 1px; }
+    .sc-kpi-badge { display: inline-flex; align-items: center; background: rgba(34,197,94,.12); border-radius: 3px; padding: 1px 4px; margin-top: 2px; }
+    .sc-kpi-badge span { font-size: 7px; font-weight: 700; color: #16a34a; }
+    .sc-nlq { background: white; border: 1.5px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; margin-top: auto; }
+    .sc-nlq-text { font-size: 9px; color: #9ca3af; }
+    .sc-nlq-btn { width: 20px; height: 20px; border-radius: 50%; background: #1D1A40; flex-shrink: 0; margin-left: auto; }
+
     @media (max-width: 900px) {
       nav { padding: 16px 24px; } .nav-links { display: none; }
       .hero, section { padding-left: 24px; padding-right: 24px; }
@@ -218,6 +290,7 @@
       .next-section { flex-direction: column; gap: 32px; padding: 64px 24px; }
       .hero-stats { flex-wrap: wrap; }
       .stat { padding: 16px 24px; }
+      .sc-slide { width: 340px; }
     }
   </style>
 </head>
@@ -782,6 +855,503 @@
   </div>
 </section>
 
+<!-- PRODUCT SHOWCASE -->
+<hr class="divider" />
+<section>
+  <div class="section-label">Product Screens</div>
+  <h2>Design <em>in motion</em> — before &amp; after</h2>
+  <p class="section-body" style="margin-bottom:40px;">
+    Comparing the existing Eltropy analytics experience against the new Intelligence platform — from static reports to conversational, AI-driven insights.
+  </p>
+
+  <div class="sc-tabs">
+    <button class="sc-tab active" onclick="switchTab('new', this)">✦ New Experience &nbsp;<span style="opacity:.5;font-weight:400;">9 screens</span></button>
+    <button class="sc-tab" onclick="switchTab('existing', this)">Existing Experience &nbsp;<span style="opacity:.5;font-weight:400;">2 screens</span></button>
+  </div>
+
+  <!-- ─── NEW EXPERIENCE ─── -->
+  <div class="sc-carousel-wrap" id="tab-new">
+    <button class="sc-nav-btn sc-prev" onclick="scrollCarousel('new-car', -1)">‹</button>
+    <button class="sc-nav-btn sc-next" onclick="scrollCarousel('new-car', 1)">›</button>
+    <div class="sc-carousel" id="new-car">
+
+      <!-- Screen 1: Onboarding Nudge -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/insights/analytics</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot active"></div>
+              <div class="sc-sb-dot"></div><div class="sc-sb-dot"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-topbar"><span class="sc-topbar-title">Analytics</span><span class="sc-topbar-chip">ALPHA</span></div>
+              <div class="sc-body" style="position:relative;align-items:center;justify-content:center;">
+                <div style="position:absolute;inset:0;background:rgba(0,0,0,.3);z-index:1;border-radius:0;"></div>
+                <div style="z-index:2;background:white;border-radius:10px;padding:14px;max-width:160px;width:100%;box-shadow:0 8px 24px rgba(0,0,0,.2);">
+                  <div style="width:28px;height:28px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);border-radius:8px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:14px;">📊</div>
+                  <div style="font-size:9px;font-weight:800;color:#1D1A40;text-align:center;line-height:1.3;margin-bottom:6px;">Create custom dashboard with Business Intelligence</div>
+                  <div style="background:#ede9fe;border-radius:4px;padding:3px 8px;font-size:7px;font-weight:700;color:#6d28d9;text-align:center;margin-bottom:8px;">ALPHA</div>
+                  <div style="display:flex;gap:4px;">
+                    <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:4px;font-size:7px;color:#333;text-align:center;font-weight:600;">Explore</div>
+                    <div style="flex:1;background:#1D1A40;border-radius:6px;padding:4px;font-size:7px;color:white;text-align:center;font-weight:600;">Ask AI</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 1 of 9</div>
+          <div class="sc-caption-title">Onboarding Nudge</div>
+          <div class="sc-caption-desc">First-time modal introduces AI-powered BI — with direct CTAs to explore dashboards or launch Ask Intelligence.</div>
+        </div>
+      </div>
+
+      <!-- Screen 2: Analytics Hub -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/insights/analytics</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot active"></div>
+              <div class="sc-sb-dot"></div><div class="sc-sb-dot"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-topbar"><span class="sc-topbar-title">Analytics</span></div>
+              <div class="sc-body">
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <div style="background:#f3f4f6;border-radius:20px;padding:3px 10px;font-size:8px;font-weight:600;color:#374151;">Message Insights</div>
+                  <div style="background:white;border:1px solid #e5e7eb;border-radius:20px;padding:3px 10px;font-size:8px;font-weight:600;color:#6b7280;">Interaction Insights</div>
+                  <div style="background:white;border:1px solid #e5e7eb;border-radius:20px;padding:3px 10px;font-size:8px;font-weight:600;color:#6b7280;">Collection Insights</div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:4px;">
+                  <div style="flex:1;background:white;border:1px solid #eee;border-radius:8px;padding:10px;">
+                    <div style="font-size:9px;font-weight:700;color:#1D1A40;margin-bottom:3px;">Message Insights</div>
+                    <div style="font-size:7px;color:#888;">Created 2023-02-19</div>
+                    <div style="font-size:7px;color:#888;">Last updated 2025-10-08</div>
+                  </div>
+                  <div style="flex:1;background:white;border:1px solid #eee;border-radius:8px;padding:10px;">
+                    <div style="font-size:9px;font-weight:700;color:#1D1A40;margin-bottom:3px;">Test Dashboard V6</div>
+                    <div style="font-size:7px;color:#888;">Created 2025-07-04</div>
+                  </div>
+                </div>
+                <div style="background:linear-gradient(90deg,#ede9fe,#dbeafe);border-radius:8px;padding:10px;display:flex;align-items:center;gap:8px;margin-top:auto;">
+                  <div style="font-size:9px;font-weight:700;color:#3730a3;">Create custom dashboard with Business Intelligence ✦</div>
+                  <div style="margin-left:auto;background:#1D1A40;border-radius:6px;padding:4px 8px;font-size:7px;font-weight:700;color:white;white-space:nowrap;">Ask AI</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 2 of 9</div>
+          <div class="sc-caption-title">Analytics Hub</div>
+          <div class="sc-caption-desc">Central analytics landing page with tabbed categories for pre-built dashboard types and an AI onboarding banner.</div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Ask Intelligence Empty State -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/intelligence/ask</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot active"></div>
+              <div class="sc-sb-dot"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-topbar"><span class="sc-topbar-title">Ask Intelligence</span></div>
+              <div class="sc-body" style="align-items:center;justify-content:center;gap:10px;">
+                <div style="width:28px;height:28px;background:linear-gradient(135deg,#6d28d9,#4f46e5);border-radius:50%;"></div>
+                <div style="font-size:10px;font-weight:800;color:#1D1A40;text-align:center;">Meet Ask Intelligence</div>
+                <div style="font-size:8px;color:#6b7280;text-align:center;line-height:1.5;max-width:180px;">Ask a business question about your data. Some suggestions below:</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;width:100%;">
+                  <div style="background:white;border:1px solid #e5e7eb;border-radius:7px;padding:7px;font-size:8px;color:#1D1A40;font-weight:600;">Active users ↗</div>
+                  <div style="background:white;border:1px solid #e5e7eb;border-radius:7px;padding:7px;font-size:8px;color:#1D1A40;font-weight:600;">Catch up on comms ↗</div>
+                  <div style="background:white;border:1px solid #e5e7eb;border-radius:7px;padding:7px;font-size:8px;color:#1D1A40;font-weight:600;">Catch up on meetings ↗</div>
+                  <div style="background:white;border:1px solid #e5e7eb;border-radius:7px;padding:7px;font-size:8px;color:#1D1A40;font-weight:600;">Weekly summary ↗</div>
+                </div>
+                <div class="sc-nlq" style="width:100%;margin-top:4px;">
+                  <span class="sc-nlq-text">e.g. show me text messages sent last month…</span>
+                  <div class="sc-nlq-btn"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 3 of 9</div>
+          <div class="sc-caption-title">Ask Intelligence — Empty State</div>
+          <div class="sc-caption-desc">Onboarding state with pre-populated query suggestions to help users discover the NLQ capability immediately.</div>
+        </div>
+      </div>
+
+      <!-- Screen 4: Ask Intelligence with chart -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/intelligence/ask</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot active"></div>
+              <div class="sc-sb-dot"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-topbar"><span class="sc-topbar-title">Ask Intelligence</span></div>
+              <div class="sc-body" style="gap:6px;">
+                <div style="background:#f9fafb;border-radius:8px;padding:8px 10px;">
+                  <div style="font-size:8px;font-weight:700;color:#374151;">Sashil K.</div>
+                  <div style="font-size:8px;color:#6366f1;font-weight:600;">Show the weekly active users</div>
+                </div>
+                <div style="background:#f9fafb;border-radius:8px;padding:8px 10px;">
+                  <div style="display:flex;align-items:center;gap:4px;margin-bottom:5px;">
+                    <div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#4f46e5);"></div>
+                    <div style="font-size:8px;font-weight:700;color:#374151;">Ask Intelligence</div>
+                  </div>
+                  <div style="font-size:7px;color:#6b7280;margin-bottom:6px;">you want to know the number of active users for each week.</div>
+                  <!-- Mini chart -->
+                  <div style="background:white;border:1px solid #eee;border-radius:6px;padding:6px;">
+                    <div style="font-size:7px;font-weight:600;color:#374151;margin-bottom:4px;">Unique Count User Id by Weekly Date</div>
+                    <div style="display:flex;align-items:flex-end;gap:2px;height:40px;">
+                      <div style="flex:1;background:#6366f1;opacity:.2;border-radius:2px 2px 0 0;height:20%;"></div>
+                      <div style="flex:1;background:#6366f1;opacity:.3;border-radius:2px 2px 0 0;height:30%;"></div>
+                      <div style="flex:1;background:#6366f1;opacity:.4;border-radius:2px 2px 0 0;height:40%;"></div>
+                      <div style="flex:1;background:#6366f1;opacity:.6;border-radius:2px 2px 0 0;height:55%;"></div>
+                      <div style="flex:1;background:#6366f1;opacity:.8;border-radius:2px 2px 0 0;height:70%;"></div>
+                      <div style="flex:1;background:#6366f1;opacity:1;border-radius:2px 2px 0 0;height:100%;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="sc-nlq" style="width:100%;margin-top:auto;">
+                  <span class="sc-nlq-text">Ask a follow-up question…</span>
+                  <div class="sc-nlq-btn"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 4 of 9</div>
+          <div class="sc-caption-title">Ask Intelligence — Query Result</div>
+          <div class="sc-caption-desc">Conversational UI returns an instant visual chart response. Users can ask follow-up questions to refine analysis.</div>
+        </div>
+      </div>
+
+      <!-- Screen 5: Upsell tooltip -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/intelligence/ask</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot active"></div>
+              <div class="sc-sb-dot"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-topbar"><span class="sc-topbar-title">Ask Intelligence</span><div style="margin-left:auto;background:#1D1A40;border-radius:6px;padding:3px 8px;font-size:7px;font-weight:700;color:white;">Explore dashboards</div></div>
+              <div class="sc-body" style="gap:6px;position:relative;">
+                <div style="background:#f9fafb;border-radius:8px;padding:8px 10px;font-size:7px;color:#6b7280;">...chart result visible...</div>
+                <!-- Tooltip -->
+                <div style="background:white;border:1px solid #e5e7eb;border-radius:10px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);margin:4px 0;">
+                  <div style="font-size:10px;font-weight:800;color:#1D1A40;margin-bottom:4px;">Ready for deeper analytics?</div>
+                  <div style="font-size:8px;color:#6b7280;line-height:1.5;">Access dashboards, KPI monitoring, and insights in our Business Intelligence module.</div>
+                </div>
+                <div class="sc-nlq" style="width:100%;margin-top:auto;">
+                  <span class="sc-nlq-text">Ask another question…</span>
+                  <div class="sc-nlq-btn"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 5 of 9</div>
+          <div class="sc-caption-title">Ask Intelligence — Cross-sell</div>
+          <div class="sc-caption-desc">Contextual nudge to the BI dashboard module surfaces after a query result, driving feature discovery without interrupting the flow.</div>
+        </div>
+      </div>
+
+      <!-- Screen 6: BI Dashboard Hub -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/intelligence/bi</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot"></div>
+              <div class="sc-sb-dot active"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-topbar"><span class="sc-topbar-title">Business Intelligence</span><span class="sc-topbar-chip">ALPHA</span></div>
+              <div class="sc-body" style="gap:6px;">
+                <div class="sc-nlq" style="width:100%;">
+                  <div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#4f46e5);flex-shrink:0;"></div>
+                  <span class="sc-nlq-text">Ask Intelligence — get AI answers about your data</span>
+                  <div class="sc-nlq-btn"></div>
+                </div>
+                <div style="font-size:8px;font-weight:700;color:#1D1A40;margin-top:4px;">KPIs Watchlist</div>
+                <div class="sc-kpi-row">
+                  <div class="sc-kpi">
+                    <div class="sc-kpi-num">158K</div>
+                    <div class="sc-kpi-label">Weekly Active</div>
+                    <div class="sc-kpi-badge"><span>+36%</span></div>
+                  </div>
+                  <div class="sc-kpi">
+                    <div class="sc-kpi-num">64.6K</div>
+                    <div class="sc-kpi-label">Voice Sessions</div>
+                    <div class="sc-kpi-badge"><span>+36%</span></div>
+                  </div>
+                  <div class="sc-kpi">
+                    <div class="sc-kpi-num">46.9K</div>
+                    <div class="sc-kpi-label">AI Adoptions</div>
+                  </div>
+                </div>
+                <div style="font-size:8px;font-weight:700;color:#1D1A40;margin-top:2px;">Analytics dashboards overview</div>
+                <div style="display:flex;gap:6px;font-size:7px;color:#6b7280;border-bottom:1px solid #eee;padding-bottom:4px;">
+                  <span style="color:#1D1A40;font-weight:700;border-bottom:2px solid #1D1A40;padding-bottom:3px;">All (12)</span>
+                  <span>Created by you (1)</span>
+                  <span>Shared (1)</span>
+                </div>
+                <div style="background:white;border:1px solid #eee;border-radius:6px;padding:7px;">
+                  <div style="font-size:8px;font-weight:700;color:#1D1A40;">Ai voice agents insights</div>
+                  <div style="font-size:7px;color:#6b7280;margin-top:1px;">A comprehensive view of key performance metrics</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 6 of 9</div>
+          <div class="sc-caption-title">BI Dashboard Hub</div>
+          <div class="sc-caption-desc">Central BI landing with Ask Intelligence prominently anchored at top, KPIs Watchlist, and full dashboard directory.</div>
+        </div>
+      </div>
+
+      <!-- Screen 7: KPI Dashboard -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/intelligence/bi/ai-voice-insights</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot"></div>
+              <div class="sc-sb-dot active"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-topbar"><span class="sc-topbar-title">Ai voice agents insights</span><div style="margin-left:auto;background:#f0fdf4;border-radius:6px;padding:3px 8px;font-size:7px;font-weight:700;color:#16a34a;">View AI summary</div></div>
+              <div class="sc-body" style="gap:5px;padding:0;">
+                <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);padding:10px 12px;">
+                  <div style="font-size:9px;font-weight:800;color:white;">Key Performance Indicators</div>
+                  <div style="font-size:7px;color:rgba(255,255,255,.65);margin-top:2px;">Overview on count of sessions, duration and containment</div>
+                </div>
+                <div style="padding:8px;">
+                  <div class="sc-kpi-row">
+                    <div class="sc-kpi"><div class="sc-kpi-num" style="font-size:9px;">490K</div><div class="sc-kpi-label">Total Sessions</div></div>
+                    <div class="sc-kpi"><div class="sc-kpi-num" style="font-size:9px;">1.66m</div><div class="sc-kpi-label">Avg Duration</div></div>
+                    <div class="sc-kpi"><div class="sc-kpi-num" style="font-size:9px;">59.3%</div><div class="sc-kpi-label">Containment</div></div>
+                    <div class="sc-kpi"><div class="sc-kpi-num" style="font-size:9px;">93.9%</div><div class="sc-kpi-label">Compliance</div></div>
+                  </div>
+                  <div style="font-size:7px;color:#888;margin:6px 0 4px;">Monthly Breakdown</div>
+                  <div class="sc-kpi-row">
+                    <div class="sc-kpi"><div class="sc-kpi-num" style="font-size:9px;">80.9K</div><div class="sc-kpi-label">Jan Sessions</div></div>
+                    <div class="sc-kpi"><div class="sc-kpi-num" style="font-size:9px;">1.59m</div><div class="sc-kpi-label">Jan Avg</div></div>
+                    <div class="sc-kpi"><div class="sc-kpi-num" style="font-size:9px;">57.1%</div><div class="sc-kpi-label">Jan Contain.</div></div>
+                    <div class="sc-kpi"><div class="sc-kpi-num" style="font-size:9px;">95.2%</div><div class="sc-kpi-label">Jan Comply</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 7 of 9</div>
+          <div class="sc-caption-title">KPI Dashboard — AI Voice Insights</div>
+          <div class="sc-caption-desc">Full KPI dashboard with 8 metric cards across sessions, duration, and containment rates — with MoM comparison sparklines.</div>
+        </div>
+      </div>
+
+      <!-- Screen 8: Select KPIs Modal -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/intelligence/bi</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot"></div>
+              <div class="sc-sb-dot active"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content" style="position:relative;">
+              <div style="position:absolute;inset:0;background:rgba(0,0,0,.25);z-index:1;"></div>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;background:white;border-radius:10px;padding:14px;width:200px;">
+                <div style="font-size:9px;font-weight:800;color:#1D1A40;margin-bottom:10px;">Select KPI / datasets</div>
+                <div style="display:flex;gap:8px;">
+                  <div style="width:70px;flex-shrink:0;">
+                    <div style="font-size:7px;font-weight:600;color:#374151;margin-bottom:4px;">Select dataset</div>
+                    <div style="background:#ede9fe;border-radius:6px;padding:4px 6px;font-size:7px;font-weight:700;color:#6d28d9;margin-bottom:3px;">Interactions ✓</div>
+                    <div style="padding:4px 6px;font-size:7px;color:#6b7280;">AI Agents</div>
+                    <div style="padding:4px 6px;font-size:7px;color:#6b7280;">Member</div>
+                    <div style="padding:4px 6px;font-size:7px;color:#6b7280;">Voice Call</div>
+                  </div>
+                  <div style="flex:1;">
+                    <div style="font-size:7px;font-weight:600;color:#374151;margin-bottom:4px;">26 KPIs available</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+                      <div style="border:1.5px solid #6366f1;border-radius:5px;padding:5px;"><div style="font-size:8px;font-weight:700;color:#1D1A40;">158K</div><div style="font-size:6px;color:#888;">Weekly Active</div></div>
+                      <div style="border:1.5px solid #6366f1;border-radius:5px;padding:5px;"><div style="font-size:8px;font-weight:700;color:#1D1A40;">64.6K</div><div style="font-size:6px;color:#888;">Voice Sessions</div></div>
+                      <div style="border:1px solid #eee;border-radius:5px;padding:5px;"><div style="font-size:8px;font-weight:700;color:#1D1A40;">46.9K</div><div style="font-size:6px;color:#888;">AI Adoption</div></div>
+                      <div style="border:1px solid #eee;border-radius:5px;padding:5px;"><div style="font-size:8px;font-weight:700;color:#1D1A40;">46.9K</div><div style="font-size:6px;color:#888;">Compliance</div></div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:4px;margin-top:10px;justify-content:flex-end;">
+                  <div style="border:1px solid #e5e7eb;border-radius:6px;padding:4px 10px;font-size:7px;font-weight:600;color:#374151;">Cancel</div>
+                  <div style="background:#1D1A40;border-radius:6px;padding:4px 10px;font-size:7px;font-weight:700;color:white;">Select</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 8 of 9</div>
+          <div class="sc-caption-title">Select KPI / Datasets</div>
+          <div class="sc-caption-desc">Dataset + KPI picker modal for building custom dashboards — browse 50+ KPIs across datasets and add to your watchlist.</div>
+        </div>
+      </div>
+
+      <!-- Screen 9: Dashboard empty state / creation -->
+      <div class="sc-slide">
+        <div class="sc-browser">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai/intelligence/bi/new</div>
+          </div>
+          <div class="sc-screen-mock">
+            <div class="sc-sidebar">
+              <div class="sc-sb-logo"></div>
+              <div class="sc-sb-dot"></div>
+              <div class="sc-sb-dot active"></div><div class="sc-sb-dot"></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-topbar"><span class="sc-topbar-title">Sales Performance</span></div>
+              <div class="sc-body" style="align-items:center;justify-content:center;gap:12px;text-align:center;">
+                <div style="font-size:11px;font-weight:800;color:#1D1A40;line-height:1.3;">Let's start building your dashboard</div>
+                <div style="font-size:8px;color:#6b7280;">Choose creation method</div>
+                <div style="display:flex;gap:8px;">
+                  <div style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 10px;text-align:center;width:80px;">
+                    <div style="width:20px;height:20px;background:linear-gradient(135deg,#ede9fe,#c4b5fd);border-radius:6px;margin:0 auto 5px;"></div>
+                    <div style="font-size:8px;font-weight:700;color:#1D1A40;">Ask Intelligence</div>
+                    <div style="font-size:6px;color:#6b7280;margin-top:2px;line-height:1.3;">Describe what you need and let AI build it</div>
+                  </div>
+                  <div style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 10px;text-align:center;width:80px;">
+                    <div style="width:20px;height:20px;background:#f3f4f6;border-radius:6px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:10px;">✏️</div>
+                    <div style="font-size:8px;font-weight:700;color:#1D1A40;">Add Manually</div>
+                    <div style="font-size:6px;color:#6b7280;margin-top:2px;line-height:1.3;">Choose from 50+ pre-built widgets</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Screen 9 of 9</div>
+          <div class="sc-caption-title">Dashboard Creation — Empty State</div>
+          <div class="sc-caption-desc">Zero-friction creation flow: describe your needs via NLQ or pick from 50+ widgets. AI-first path reduces setup time dramatically.</div>
+        </div>
+      </div>
+
+    </div><!-- /new-car -->
+  </div>
+
+  <!-- ─── EXISTING EXPERIENCE ─── -->
+  <div class="sc-carousel-wrap hidden" id="tab-existing">
+    <button class="sc-nav-btn sc-prev" onclick="scrollCarousel('existing-car', -1)">‹</button>
+    <button class="sc-nav-btn sc-next" onclick="scrollCarousel('existing-car', 1)">›</button>
+    <div class="sc-carousel" id="existing-car">
+
+      <div class="sc-slide">
+        <div class="sc-browser sc-existing">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai / Analytics (existing)</div>
+          </div>
+          <img src="images/existing-screen-1.png" alt="Existing analytics screen" />
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Existing — Screen 1 of 2</div>
+          <div class="sc-caption-title">Previous Analytics Experience</div>
+          <div class="sc-caption-desc">Rigid, static reporting UI with limited self-service capability. Required analyst involvement for most insights.</div>
+        </div>
+      </div>
+
+      <div class="sc-slide">
+        <div class="sc-browser sc-existing">
+          <div class="sc-browser-bar">
+            <div class="sc-dot" style="background:#ff5f57;"></div>
+            <div class="sc-dot" style="background:#febc2e;"></div>
+            <div class="sc-dot" style="background:#28c840;"></div>
+            <div class="sc-url">eltropy.ai / Analytics (existing)</div>
+          </div>
+          <img src="images/existing-screen-2.png" alt="Existing KPI dashboard" />
+        </div>
+        <div class="sc-caption">
+          <div class="sc-caption-label">Existing — Screen 2 of 2</div>
+          <div class="sc-caption-title">Previous KPI Dashboard</div>
+          <div class="sc-caption-desc">Fixed KPI views with no customisation. Users couldn't tailor metrics to their role or monitor specific indicators.</div>
+        </div>
+      </div>
+
+    </div><!-- /existing-car -->
+  </div>
+
+</section>
+
 <!-- IMPACT -->
 <div class="impact-section">
   <div class="impact-inner">
@@ -833,6 +1403,20 @@
     const pct = (h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
     el.style.width = pct + '%';
   });
+
+  function switchTab(tab, btn) {
+    // Update buttons
+    document.querySelectorAll('.sc-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Show/hide carousels
+    document.getElementById('tab-new').classList.toggle('hidden', tab !== 'new');
+    document.getElementById('tab-existing').classList.toggle('hidden', tab !== 'existing');
+  }
+
+  function scrollCarousel(id, dir) {
+    const el = document.getElementById(id);
+    el.scrollBy({ left: dir * 460, behavior: 'smooth' });
+  }
 </script>
 </body>
 </html>
