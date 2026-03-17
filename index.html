@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eltropy Intelligence — Case Study · Aria Chen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fraunces:ital,wght@0,300;0,600;0,700;1,300;1,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:    #0f0f0f; --ink2: #3a3a3a; --ink3: #6b6b6b;
+      --line:   #e8e8e8; --bg: #fafafa; --white: #ffffff;
+      --accent: #5b4fcf; --accent2: #7c6fcd; --teal: #0f766e;
+      --orange: #f97316; --green: #22c55e; --radius: 16px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(250,250,250,0.88); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: var(--ink3); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta { background: var(--ink) !important; color: var(--white) !important; padding: 10px 20px; border-radius: 100px; font-size: 13px !important; transition: background .2s !important; }
+    .nav-cta:hover { background: var(--accent) !important; }
+
+    /* PROGRESS */
+    #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #a78bfa); z-index: 200; transition: width .1s; }
+
+    /* HERO */
+    .hero { padding: 140px 48px 80px; max-width: 1200px; margin: 0 auto; }
+    .hero-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+    .chip-purple { background: #ede9fe; color: #6d28d9; }
+    .chip-teal   { background: #ccfbf1; color: #0f766e; }
+    .chip-blue   { background: #dbeafe; color: #1d4ed8; }
+    .chip-gray   { background: #f3f4f6; color: #374151; }
+    .chip-dot::before { content:''; display:inline-block; width:7px; height:7px; border-radius:50%; background:currentColor; opacity:.7; }
+
+    .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(40px,5.5vw,68px); font-weight: 700; line-height: 1.1; letter-spacing: -.03em; color: var(--ink); max-width: 860px; margin-bottom: 24px; }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub { font-size: 18px; color: var(--ink3); max-width: 580px; line-height: 1.7; margin-bottom: 48px; }
+
+    .hero-stats { display: flex; gap: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; width: fit-content; background: var(--white); }
+    .stat { padding: 20px 36px; border-right: 1px solid var(--line); }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-size: 32px; font-weight: 800; color: var(--ink); line-height: 1; letter-spacing: -.03em; }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 12px; font-weight: 500; color: var(--ink3); margin-top: 4px; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* HERO VISUAL */
+    .hero-visual {
+      margin-top: 56px; border-radius: 24px; overflow: hidden;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 45%, #1e3a5f 100%);
+      padding: 48px 48px 0; display: flex; gap: 24px; align-items: flex-end; min-height: 400px; position: relative;
+    }
+    .hero-visual::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 20% 50%, rgba(167,139,250,.12) 0%, transparent 60%); }
+
+    .dashboard-mock {
+      background: #1a1a2e; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,.45); position: relative; z-index: 1;
+      flex: 1; min-width: 0;
+    }
+    .dm-header { background: #16213e; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .dm-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dm-title { font-size: 10px; font-weight: 600; color: rgba(255,255,255,.5); margin-left: auto; margin-right: auto; }
+    .dm-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .dm-row { display: flex; gap: 10px; }
+    .dm-kpi { flex: 1; background: rgba(255,255,255,.05); border-radius: 8px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.07); }
+    .dm-kpi-num { font-size: 18px; font-weight: 800; color: white; letter-spacing: -.02em; }
+    .dm-kpi-label { font-size: 8px; color: rgba(255,255,255,.4); margin-top: 2px; }
+    .dm-kpi-badge { display: inline-flex; align-items: center; gap: 2px; background: rgba(52,211,153,.15); border-radius: 4px; padding: 2px 5px; margin-top: 4px; }
+    .dm-kpi-badge span { font-size: 7px; font-weight: 700; color: #34d399; }
+    .dm-chart { flex: 1; background: rgba(255,255,255,.05); border-radius: 8px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.07); }
+    .dm-chart-title { font-size: 8px; font-weight: 600; color: rgba(255,255,255,.5); margin-bottom: 8px; }
+    .dm-bars { display: flex; gap: 4px; align-items: flex-end; height: 40px; }
+    .dm-bar { flex: 1; border-radius: 3px 3px 0 0; }
+    .dm-ai-card { background: linear-gradient(135deg, rgba(91,79,207,.3), rgba(124,111,205,.2)); border: 1px solid rgba(167,139,250,.3); border-radius: 8px; padding: 10px 12px; }
+    .dm-ai-label { font-size: 7px; font-weight: 700; color: #a78bfa; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; display: flex; align-items: center; gap: 4px; }
+    .dm-ai-text { font-size: 8px; color: rgba(255,255,255,.65); line-height: 1.5; }
+    .dm-search { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; }
+    .dm-search-icon { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid rgba(167,139,250,.6); }
+    .dm-search-text { font-size: 8px; color: rgba(255,255,255,.35); }
+    .dm-search-cursor { width: 1px; height: 10px; background: #a78bfa; animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .hero-visual-text { color: white; position: relative; z-index: 1; padding-bottom: 48px; width: 300px; flex-shrink: 0; }
+    .hero-visual-text h3 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; line-height: 1.3; margin-bottom: 12px; }
+    .hero-visual-text p { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.7; }
+
+    /* LAYOUT */
+    section { max-width: 1200px; margin: 0 auto; padding: 96px 48px; }
+    section + section { padding-top: 0; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    h2 { font-family: 'Fraunces', serif; font-size: clamp(28px,4vw,44px); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; color: var(--ink); margin-bottom: 20px; }
+    h2 em { font-style: italic; }
+    .section-body { font-size: 17px; color: var(--ink3); line-height: 1.8; max-width: 640px; }
+    .divider { border: none; border-top: 1px solid var(--line); max-width: 1200px; margin: 0 auto; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+
+    /* INFO GRID */
+    .info-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 56px; }
+    .info-cell { background: var(--white); padding: 28px 24px; }
+    .info-cell-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+    .info-cell-value { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.5; }
+
+    /* PROBLEM CARDS */
+    .problem-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+    .problem-card { display: flex; gap: 20px; align-items: flex-start; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; transition: box-shadow .2s; }
+    .problem-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.06); }
+    .problem-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .problem-card h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .problem-card p  { font-size: 14px; color: var(--ink3); line-height: 1.7; }
+
+    /* PERSONA CARDS */
+    .persona-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 48px; }
+    .persona-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 24px; }
+    .persona-avatar { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+    .persona-card h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .persona-card .persona-role { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .06em; }
+    .pain-list { display: flex; flex-direction: column; gap: 6px; }
+    .pain-item { display: flex; gap: 8px; align-items: flex-start; }
+    .pain-dot { width: 5px; height: 5px; border-radius: 50%; background: #ef4444; margin-top: 7px; flex-shrink: 0; }
+    .pain-item span { font-size: 13px; color: var(--ink3); line-height: 1.6; }
+
+    /* USE CASES */
+    .usecase-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 40px; }
+    .usecase-item { display: flex; gap: 12px; align-items: flex-start; background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+    .usecase-num { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; color: var(--line); flex-shrink: 0; line-height: 1.3; }
+    .usecase-item p { font-size: 13px; color: var(--ink3); line-height: 1.6; }
+
+    /* USER FLOW */
+    .flow-diagram { margin-top: 48px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 40px; overflow-x: auto; }
+    .flow-inner { display: flex; gap: 0; align-items: center; min-width: 700px; }
+    .flow-node { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .flow-shape-hex { width: 80px; height: 80px; background: #ede9fe; border: 2px solid #c4b5fd; clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display: flex; align-items: center; justify-content: center; }
+    .flow-shape-hex span { font-size: 10px; font-weight: 700; color: #6d28d9; text-align: center; line-height: 1.2; }
+    .flow-shape-rect { background: #f0fdf4; border: 2px solid #86efac; border-radius: 10px; padding: 10px 14px; min-width: 120px; text-align: center; }
+    .flow-shape-rect span { font-size: 11px; font-weight: 700; color: #166534; }
+    .flow-shape-oval { background: #faf5ff; border: 2px solid #d8b4fe; border-radius: 50px; padding: 10px 20px; }
+    .flow-shape-oval span { font-size: 11px; font-weight: 700; color: #7e22ce; }
+    .flow-arrow { font-size: 20px; color: var(--line); margin: 0 8px; flex-shrink: 0; }
+    .flow-branch { display: flex; flex-direction: column; gap: 12px; }
+    .flow-branch-item { background: #f8fafc; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; font-size: 11px; color: var(--ink2); font-weight: 500; max-width: 180px; line-height: 1.4; }
+    .flow-desc { font-size: 10px; color: var(--ink3); max-width: 110px; text-align: center; line-height: 1.4; margin-top: 4px; }
+
+    /* QUOTE */
+    .quote-block { background: linear-gradient(135deg,#ede9fe,#ddd6fe); border-radius: var(--radius); padding: 36px 40px; margin-top: 32px; position: relative; overflow: hidden; }
+    .quote-block::before { content:'"'; font-family:'Fraunces',serif; font-size:120px; line-height:.8; color:#a78bfa; opacity:.4; position:absolute; top:24px; left:32px; }
+    .quote-text { font-family:'Fraunces',serif; font-size:20px; font-style:italic; font-weight:300; color:#3730a3; line-height:1.6; position:relative; z-index:1; padding-left:16px; }
+    .quote-attr { font-size:13px; font-weight:600; color:#6d28d9; margin-top:16px; padding-left:16px; }
+
+    /* DESIGN APPROACH */
+    .approach-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; margin-top: 48px; }
+    .approach-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 28px; }
+    .approach-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; }
+    .approach-card h4 { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+    .approach-card p { font-size: 14px; color: var(--ink3); line-height: 1.7; margin-bottom: 12px; }
+    .approach-list { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+    .approach-item { display: flex; gap: 8px; align-items: flex-start; }
+    .approach-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-top: 8px; flex-shrink: 0; }
+    .approach-item span { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+
+    /* DISCOVERY */
+    .discovery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 40px; }
+    .discovery-card { border-radius: var(--radius); padding: 28px 24px; }
+    .discovery-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .discovery-card p { font-size: 13px; line-height: 1.7; }
+
+    /* OUTCOMES */
+    .outcome-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+    .outcome-card { display: flex; gap: 16px; align-items: flex-start; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+    .outcome-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .outcome-card h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .outcome-card p  { font-size: 14px; color: var(--ink3); line-height: 1.7; }
+
+    /* IMPACT */
+    .impact-section { background: linear-gradient(135deg, #0f0e1a 0%, #1e1b4b 50%, #0c2340 100%); color: white; padding: 96px 48px; }
+    .impact-inner { max-width: 1200px; margin: 0 auto; }
+    .impact-section .section-label { color: #a78bfa; }
+    .impact-section h2 { color: white; }
+    .impact-section h2 em { color: #a78bfa; }
+    .impact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+    .impact-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius); padding: 36px 28px; backdrop-filter: blur(8px); transition: background .2s; }
+    .impact-card:hover { background: rgba(255,255,255,.09); }
+    .impact-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
+    .impact-big { font-family:'Fraunces',serif; font-size:56px; font-weight:700; line-height:1; letter-spacing:-.04em; margin-bottom:8px; }
+    .impact-big span { color: #34d399; }
+    .impact-card h4 { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; }
+    .impact-card p  { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.7; }
+
+    /* NEXT */
+    .next-section { max-width: 1200px; margin: 0 auto; padding: 96px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); }
+    .next-label { font-size: 12px; font-weight: 600; color: var(--ink3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
+    .next-title { font-family:'Fraunces',serif; font-size: 32px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: white; padding: 14px 28px; border-radius: 100px; font-size: 14px; font-weight: 600; text-decoration: none; flex-shrink: 0; transition: all .2s; }
+    .btn-primary:hover { background: var(--accent); transform: translateX(4px); }
+
+    footer { background: var(--ink); color: rgba(255,255,255,.5); text-align: center; padding: 32px 48px; font-size: 13px; }
+    footer a { color: rgba(255,255,255,.7); text-decoration: none; }
+    footer a:hover { color: white; }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; } .nav-links { display: none; }
+      .hero, section { padding-left: 24px; padding-right: 24px; }
+      .two-col, .persona-grid, .approach-grid, .usecase-grid, .discovery-grid, .impact-grid { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr 1fr; }
+      .impact-section { padding: 64px 24px; }
+      .next-section { flex-direction: column; gap: 32px; padding: 64px 24px; }
+      .hero-stats { flex-wrap: wrap; }
+      .stat { padding: 16px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Aria Chen</a>
+  <div class="nav-links">
+    <a href="#">Work</a>
+    <a href="#">About</a>
+    <a href="#">Process</a>
+    <a href="#" class="chip nav-cta">Let's talk →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-meta">
+    <span class="chip chip-purple chip-dot">B2B SaaS</span>
+    <span class="chip chip-teal chip-dot">AI / Analytics</span>
+    <span class="chip chip-blue chip-dot">FinTech</span>
+    <span class="chip chip-gray">Eltropy · 2025</span>
+  </div>
+
+  <h1>Designing <em>Eltropy Intelligence</em> — AI-powered BI for credit unions</h1>
+
+  <p class="hero-sub">
+    A 0→1 product design for a generative BI platform that turns fragmented credit union data
+    into instant, actionable insights — no data analyst required.
+  </p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num"><span>3</span></div>
+      <div class="stat-label">User personas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>13</span>+</div>
+      <div class="stat-label">Use cases defined</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>4</span></div>
+      <div class="stat-label">Core feature pillars</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>70</span>%</div>
+      <div class="stat-label">Analyst time saved</div>
+    </div>
+  </div>
+
+  <!-- Hero visual -->
+  <div class="hero-visual">
+    <!-- Dashboard mock -->
+    <div class="dashboard-mock" style="max-width: 520px;">
+      <div class="dm-header">
+        <div class="dm-dot" style="background:#ff5f57;"></div>
+        <div class="dm-dot" style="background:#febc2e;"></div>
+        <div class="dm-dot" style="background:#28c840;"></div>
+        <div class="dm-title">Eltropy Intelligence — Interaction Insights</div>
+      </div>
+      <div class="dm-body">
+        <div class="dm-row">
+          <div class="dm-kpi">
+            <div class="dm-kpi-num">12,847</div>
+            <div class="dm-kpi-label">Total Interactions</div>
+            <div class="dm-kpi-badge"><span>↑ 14.2%</span></div>
+          </div>
+          <div class="dm-kpi">
+            <div class="dm-kpi-num">94.3%</div>
+            <div class="dm-kpi-label">Resolution Rate</div>
+            <div class="dm-kpi-badge"><span>↑ 3.1%</span></div>
+          </div>
+          <div class="dm-kpi">
+            <div class="dm-kpi-num">2.4 min</div>
+            <div class="dm-kpi-label">Avg Handle Time</div>
+            <div class="dm-kpi-badge" style="background:rgba(248,113,113,.15);"><span style="color:#f87171;">↓ 8.5%</span></div>
+          </div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-chart" style="flex:2;">
+            <div class="dm-chart-title">Messages by Channel · Last 30 days</div>
+            <div class="dm-bars">
+              <div class="dm-bar" style="height:75%;background:#6d28d9;opacity:.7;"></div>
+              <div class="dm-bar" style="height:55%;background:#6d28d9;opacity:.5;"></div>
+              <div class="dm-bar" style="height:90%;background:#6d28d9;opacity:.9;"></div>
+              <div class="dm-bar" style="height:40%;background:#6d28d9;opacity:.4;"></div>
+              <div class="dm-bar" style="height:65%;background:#6d28d9;opacity:.6;"></div>
+              <div class="dm-bar" style="height:85%;background:#a78bfa;opacity:.8;"></div>
+              <div class="dm-bar" style="height:50%;background:#6d28d9;opacity:.5;"></div>
+            </div>
+          </div>
+          <div class="dm-chart">
+            <div class="dm-chart-title">By Branch</div>
+            <div class="dm-bars" style="height:40px;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                <div style="height:6px;background:#a78bfa;border-radius:2px;width:90%;"></div>
+                <div style="height:6px;background:#a78bfa;border-radius:2px;width:70%;opacity:.6;"></div>
+                <div style="height:6px;background:#a78bfa;border-radius:2px;width:50%;opacity:.4;"></div>
+                <div style="height:6px;background:#a78bfa;border-radius:2px;width:80%;opacity:.7;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dm-ai-card">
+          <div class="dm-ai-label">✦ AI Insight</div>
+          <div class="dm-ai-text">Text messaging volume surged 18% this week, driven by the Oak Park branch. Appointment no-shows dropped to a 3-month low — correlates with the new SMS reminder sequence launched Tuesday.</div>
+        </div>
+        <div class="dm-search">
+          <div class="dm-search-icon"></div>
+          <div class="dm-search-text">Ask Intelligence anything… e.g. "Show me unanswered messages by agent last week"</div>
+          <div class="dm-search-cursor"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual-text">
+      <h3>From raw data to instant insight</h3>
+      <p>Pre-built dashboards, natural language search, and AI-generated highlights — designed for executives and managers who need answers now, not in a week.</p>
+    </div>
+  </div>
+</div>
+
+<!-- INFO GRID -->
+<section>
+  <div class="info-grid">
+    <div class="info-cell">
+      <div class="info-cell-label">My Role</div>
+      <div class="info-cell-value">Lead Product Designer</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">Product</div>
+      <div class="info-cell-value">Eltropy Intelligence (BI Platform)</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">Users</div>
+      <div class="info-cell-value">Executives, Analysts, Ops Managers</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">Tools</div>
+      <div class="info-cell-value">Figma, Maze, ThoughtSpot, Jira</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PROBLEM STATEMENT -->
+<section>
+  <div class="two-col">
+    <div>
+      <div class="section-label">Problem Statement</div>
+      <h2>Credit unions are drowning in data they <em>can't use</em></h2>
+      <p class="section-body">
+        Credit unions and community banks struggle to convert their disparate, raw data — from core systems, Eltropy's interaction channels, CRM, and more — into meaningful, timely, and actionable intelligence.
+      </p>
+      <div class="quote-block">
+        <p class="quote-text">"We have all this data sitting in five different systems and no one can tell me what's actually happening with our members right now."</p>
+        <p class="quote-attr">— VP of Marketing, mid-size credit union</p>
+      </div>
+    </div>
+    <div class="problem-cards">
+      <div class="problem-card">
+        <div class="problem-icon" style="background:#fef2f2;">🔒</div>
+        <div>
+          <h4>Lack of Accessible Tools &amp; Expertise</h4>
+          <p>Credit unions lack a self-service BI tool easy enough for non-analysts (executives, managers, marketing VPs). They rely on manual, slow reporting or complex systems requiring dedicated data analysts.</p>
+        </div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon" style="background:#fffbeb;">🗂️</div>
+        <div>
+          <h4>Data Fragmentation</h4>
+          <p>Critical data is siloed across multiple systems — member communications in Eltropy, account data in core banking. This prevents unified, cross-source analysis needed to understand key business drivers.</p>
+        </div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon" style="background:#f0fdf4;">⏳</div>
+        <div>
+          <h4>Inefficiency in Insight Generation</h4>
+          <p>Executives and managers spend excessive time compiling reports and digging for insights rather than receiving proactive, clear, and contextualised summaries of what has changed and why.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- USER PERSONAS -->
+<section>
+  <div class="section-label">User Personas</div>
+  <h2>Three distinct users, <em>one shared frustration</em></h2>
+  <p class="section-body">Discovery interviews surfaced three primary personas — each blocked by the data problem in a fundamentally different way.</p>
+
+  <div class="persona-grid">
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#ede9fe;">👔</div>
+      <div class="persona-role">Executive / CEO</div>
+      <h4>The Strategic Leader</h4>
+      <div class="pain-list">
+        <div class="pain-item"><div class="pain-dot"></div><span>Frustrated by 1–2 week turnaround for custom reports</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>Loses confidence when conflicting numbers appear across dashboards</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>Forced into instinct-based decisions while waiting for data</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>Heavy reliance on analysts creates decision cycle bottlenecks</span></div>
+      </div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#dbeafe;">📊</div>
+      <div class="persona-role">Data Analyst</div>
+      <h4>The Organisational Bottleneck</h4>
+      <div class="pain-list">
+        <div class="pain-item"><div class="pain-dot"></div><span>Spends ~70% of time on repetitive, low-value ad-hoc queries</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>Constant context-switching due to non-stop report requests</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>Repeatedly defends metric definitions across teams</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>High-value predictive work displaced by data manipulation</span></div>
+      </div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#ccfbf1;">🏢</div>
+      <div class="persona-role">Operational Manager / VP Marketing / Contact Centre Manager</div>
+      <h4>The Day-to-Day Operator</h4>
+      <div class="pain-list">
+        <div class="pain-item"><div class="pain-dot"></div><span>Opens support tickets just to get a custom data view</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>Static dashboards can't be customised for their department</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>Can't drill down from aggregate metrics to root causes</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><span>Unable to answer spontaneous leadership questions in meetings</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- USE CASES -->
+<section>
+  <div class="section-label">Use Cases</div>
+  <h2>What users need to <em>be able to do</em></h2>
+  <p class="section-body">From discovery sessions and stakeholder workshops, we defined 13 core user stories that shaped every design decision.</p>
+
+  <div class="usecase-grid">
+    <div class="usecase-item">
+      <div class="usecase-num">01</div>
+      <p>See a notification on the current analytics page that there is a new, better way to access analytics.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">02</div>
+      <p>Access pre-built dashboards covering all Eltropy product areas (Interaction Insights).</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">03</div>
+      <p>See AI-generated highlights and summaries on dashboards that note significant changes or trends.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">04</div>
+      <p>Customise pre-built dashboards (change charts, add filters) and save them as a new view for my team.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">05</div>
+      <p>Access and manage custom dashboards created from scratch using available data fields.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">06</div>
+      <p>Create custom dashboards by entering a dashboard name and description to auto-generate initial content.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">07</div>
+      <p>Add, remove, and configure widgets/charts within a custom dashboard.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">08</div>
+      <p>Type questions in natural language (e.g. "Show me text messages sent last month by branch") and receive visual answers.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">09</div>
+      <p>Ask conversational follow-up questions to refine results without losing context (e.g. "How about for this month?").</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">10</div>
+      <p>Set up alerts for key metrics based on threshold conditions (e.g. falls below 50) or automatic anomaly detection.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">11</div>
+      <p>Receive alert notifications via email and in-app, including an AI-generated explanation of the change.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num">12</div>
+      <p>Export dashboard visuals (PDF/Image) or the underlying data (CSV) for external reporting.</p>
+    </div>
+    <div class="usecase-item">
+      <div class="usecase-num" style="grid-column:span 1;">13</div>
+      <p>View suggested queries and helpful business terms in the search bar to guide analysis.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- USER FLOW -->
+<section>
+  <div class="section-label">User Flow</div>
+  <h2>How users navigate <em>the Intelligence hub</em></h2>
+  <p class="section-body">From the existing Analytics entry point, users transition into the new Intelligence hub where two distinct paths branch: pre-built dashboards and custom dashboards.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-inner">
+      <!-- Analytics -->
+      <div class="flow-node">
+        <div class="flow-shape-hex"><span>Analytics</span></div>
+        <div class="flow-desc">Existing entry point with migration notification</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <!-- Intelligence -->
+      <div class="flow-node">
+        <div style="width:80px;height:80px;background:#ede9fe;border:2px solid #c4b5fd;clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:9px;font-weight:700;color:#6d28d9;text-align:center;">Intelligence</span>
+        </div>
+        <div class="flow-desc">Central BI hub</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <!-- Branch -->
+      <div class="flow-branch">
+        <div>
+          <div class="flow-shape-oval"><span>Pre-built Dashboards</span></div>
+          <div style="margin-top:8px;margin-left:12px;">
+            <div class="flow-branch-item">Access different categories of dashboards</div>
+            <div class="flow-branch-item" style="margin-top:6px;">View AI summary directly on dashboard card — no extra navigation</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;">
+          <div class="flow-shape-oval"><span>Custom Dashboards</span></div>
+          <div style="display:flex;gap:10px;margin-top:8px;margin-left:12px;">
+            <div>
+              <div style="font-size:10px;font-weight:700;color:#6d28d9;margin-bottom:4px;">New User</div>
+              <div class="flow-branch-item">Enter name + description → AI auto-fills → guided drill-down → add to favourites → redirect to dashboard</div>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:700;color:#6d28d9;margin-bottom:4px;">Existing User</div>
+              <div class="flow-branch-item">View list of created dashboards · Switch All / Favourites · Search, filter, drill down, change analysis</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- DESIGN APPROACH -->
+<section>
+  <div class="section-label">Design Approach</div>
+  <h2>Four pillars that fill a <em>critical gap</em> for community banks</h2>
+  <p class="section-body">
+    The design goal: turn disparate data into meaningful, timely insights using the power of generative AI — without requiring any technical expertise from the user.
+  </p>
+
+  <div class="approach-grid">
+    <div class="approach-card">
+      <div class="approach-icon" style="background:#ede9fe;">📋</div>
+      <h4>Predefined Dashboards — Interaction Insights</h4>
+      <p>Ready-made analytics covering each Eltropy solution area — eliminating the need for users to build reports from scratch.</p>
+      <div class="approach-list">
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Digital Channels Engagement:</strong> Unified overview of Text Messaging, Secure Chat, Remote Video, and Co-Browse.</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Appointment Management:</strong> Tracks bookings, completions, and no-shows.</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Lobby Management:</strong> Branch traffic, wait times, and service times.</span></div>
+      </div>
+    </div>
+
+    <div class="approach-card">
+      <div class="approach-icon" style="background:#dbeafe;">🔧</div>
+      <h4>Custom Dashboards</h4>
+      <p>Users can create dashboards from scratch or modify pre-built ones to fit their team's specific needs.</p>
+      <div class="approach-list">
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Create from scratch:</strong> Name, description, and AI auto-populates initial widgets.</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Cross-filtering:</strong> Click a chart element (e.g. a branch bar) to filter all other charts.</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Standard filters:</strong> Date range, branch, agent — available on every dashboard.</span></div>
+      </div>
+    </div>
+
+    <div class="approach-card">
+      <div class="approach-icon" style="background:#f0fdf4;">💬</div>
+      <h4>Natural Language Search — "Ask Intelligence"</h4>
+      <p>Type questions in plain English, receive instant visual answers. As intuitive as Googling something.</p>
+      <div class="approach-list">
+        <div class="approach-item"><div class="approach-dot"></div><span>Powered by ThoughtSpot's NLQ engine for high-accuracy query parsing.</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Conversational BI:</strong> Follow-up queries refine results without losing context (e.g. "break that down by member age").</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span>Suggested queries and business glossary terms surface in the search bar to guide analysis.</span></div>
+      </div>
+    </div>
+
+    <div class="approach-card">
+      <div class="approach-icon" style="background:#fef9c3;">✦</div>
+      <h4>AI-Generated Insights &amp; Alerts</h4>
+      <p>Proactively surfacing what matters — so users never have to dig for answers themselves.</p>
+      <div class="approach-list">
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>AI Highlights:</strong> Auto-surfaces notable changes and trends when a dashboard is opened.</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Natural Language Narratives:</strong> Plain-language explanations of charts help non-technical users interpret findings.</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Threshold Alerts:</strong> e.g. if video sessions fall below 50 — notify via email + in-app with AI explanation.</span></div>
+        <div class="approach-item"><div class="approach-dot"></div><span><strong>Anomaly Detection:</strong> Automatic alerts when a metric deviates significantly from the norm.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- DISCOVERY OUTCOMES -->
+<section>
+  <div class="section-label">Discovery Script &amp; Outcomes</div>
+  <h2>What we asked, what we <em>learned</em></h2>
+  <p class="section-body">Our discovery sessions used a before/after protocol — testing assumptions before showing the solution, then validating decisions after.</p>
+
+  <div class="two-col" style="margin-top:48px;">
+    <div>
+      <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin-bottom:16px;">Before showing the solution</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;">
+          <p style="font-size:13px;color:var(--ink2);line-height:1.6;">When you come to analytics/intelligence, what data would be most helpful to show upfront?</p>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;">
+          <p style="font-size:13px;color:var(--ink2);line-height:1.6;">On the dashboard listing page, which information is most important to see at a glance in the overview cards?</p>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;">
+          <p style="font-size:13px;color:var(--ink2);line-height:1.6;">Do KPIs in the overview cards help you make decisions, or would an AI-generated summary be more useful?</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin-bottom:16px;">After showing the solution</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;">
+          <p style="font-size:13px;color:var(--ink2);line-height:1.6;">Which section do your eyes go to first — and why?</p>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;">
+          <p style="font-size:13px;color:var(--ink2);line-height:1.6;">Do the insights shown here give you enough context to take action immediately?</p>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;">
+          <p style="font-size:13px;color:var(--ink2);line-height:1.6;">Do the trend indicators (+/- %) help you decide if something needs attention? What's missing?</p>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;">
+          <p style="font-size:13px;color:var(--ink2);line-height:1.6;">What would you do if this metric dropped? What's missing here for you to take action?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Outcome insights -->
+  <div style="margin-top:48px;">
+    <h3 style="font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px;">Key design decisions unlocked by research</h3>
+    <p style="font-size:15px;color:var(--ink3);margin-bottom:28px;">Two standout findings directly changed the product direction.</p>
+    <div class="outcome-cards">
+      <div class="outcome-card">
+        <div class="outcome-icon" style="background:#fef9c3;">⭐</div>
+        <div>
+          <h4>Watchlist instead of Favourites</h4>
+          <p>Users pushed back on the "Favourites" model. What they actually wanted was a <strong>Watchlist</strong> — the ability to flag and monitor specific metrics, not entire dashboards. This reframe changed the entire navigation and notification architecture.</p>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon" style="background:#ede9fe;">🎛️</div>
+        <div>
+          <h4>Customisable KPIs on dashboard card views</h4>
+          <p>The initial design showed fixed KPIs in each dashboard's card/overview. Users unanimously needed the ability to choose which KPIs appear in their card view — different roles care about completely different metrics. This led to a per-user KPI personalisation feature.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<div class="impact-section">
+  <div class="impact-inner">
+    <div class="section-label">Expected Impact</div>
+    <h2>Turning data bottlenecks into <em>competitive advantages</em></h2>
+    <p style="font-size:17px;color:rgba(255,255,255,.55);max-width:580px;line-height:1.8;margin-top:12px;">
+      Projected outcomes based on discovery research findings and comparable BI modernisation projects in financial services.
+    </p>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-icon" style="background:rgba(52,211,153,.15);">⏱️</div>
+        <div class="impact-big"><span>70</span>%</div>
+        <h4>Reduction in analyst time on low-value queries</h4>
+        <p>Self-service NLQ and pre-built dashboards eliminate the bulk of ad-hoc report requests that currently consume ~70% of analyst capacity.</p>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon" style="background:rgba(129,140,248,.15);">🚀</div>
+        <div class="impact-big"><span>10×</span></div>
+        <h4>Faster insight delivery for executives</h4>
+        <p>From 1–2 week report turnaround to sub-60-second answers via AI-powered natural language search. Strategic decisions no longer blocked by data teams.</p>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon" style="background:rgba(251,191,36,.15);">📡</div>
+        <div class="impact-big"><span>0</span></div>
+        <h4>Blind spots with automated anomaly alerts</h4>
+        <p>Proactive AI alerts mean managers are notified of metric deviations before they become member-impacting issues — shifting from reactive to proactive operations.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT -->
+<div class="next-section">
+  <div>
+    <div class="next-label">Next Case Study</div>
+    <div class="next-title">TruStone Financial<br>Mobile Onboarding</div>
+  </div>
+  <a href="#" class="btn-primary">View next project <span>→</span></a>
+</div>
+
+<footer>
+  <p>Designed &amp; built by <a href="#">Aria Chen</a> · <a href="#">ariac.design</a> · <a href="#">LinkedIn</a></p>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('progress-bar');
+    const h = document.documentElement;
+    const pct = (h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    el.style.width = pct + '%';
+  });
+</script>
+</body>
+</html>
